@@ -70,15 +70,15 @@ class BinarySearchTree {
             this.value = successor.value;
             successor.remove(successor.key);
          } else if (this.left) {
-         /* If the node only has a left child, 
+            /* If the node only has a left child, 
            then you replace the node with its left child */
             this._replaceWith(this.left);
          } else if (this.right) {
-         /* And similarly if the node only has a right child 
+            /* And similarly if the node only has a right child 
            then you replace it with its right child */
             this._replaceWith(this.right);
          } else {
-         /* If the node has no children then
+            /* If the node has no children then
            simply remove it and any references to it 
            by calling "this._replaceWith(null)" */
             this._replaceWith(null);
@@ -123,4 +123,97 @@ class BinarySearchTree {
       }
       return this.left._findMin();
    }
+}
+
+class BST {
+   constructor(key = null, value = null, parent = null) {
+      this.key = key;
+      this.value = null;
+      this.parent = parent;
+      this.left = null;
+      this.right = null;
+   }
+
+   insert(key, value) {
+      if (this.key === null) {
+         this.key = key;
+         this.value = value;
+      } else {
+         if (key > this.key) {
+            if (this.right === null) {
+               this.right = new BinarySearchTree(key, value, this);
+            } else {
+               this.right.insert(key, value, this);
+            }
+         } else {
+            if (key < this.key) {
+               if (this.left === null) {
+                  this.left = new BinarySearchTree(key, value, this);
+               } else {
+                  this.right.insert(key, value, this);
+               }
+            }
+         }
+      }
+   }
+
+   find(key) {
+      if (this.key === key) {
+         return key;
+      } else {
+         if (key > this.key && this.right) {
+            this.right.find(key);
+         }
+         if (key < this.key && this.left) {
+            this.left.find(key);
+         }
+      }
+
+      throw new Error("not found");
+   }
+
+   _findMin() {
+      if (!this.left) {
+         return this;
+      }
+      return this.left._findMin();
+   }
+
+   _replaceWith() {}
+}
+
+const ex = [3, 1, 4, 6, 9, 2, 5, 7];
+const treePractice = new BinarySearchTree();
+let add = 0;
+
+for (let i = 0; i < ex.length; i++) {
+   treePractice.insert(ex[i], ex[i]);
+   add += ex[i];
+}
+
+function tree(t) {
+   if (!t) {
+      return 0;
+   }
+   return tree(t.left) + t.value + tree(t.right);
+}
+
+console.log(treePractice);
+console.log("I add everything together and the sum is: ", tree(treePractice));
+
+function height(t) {
+   if (!t) return 0;
+   else left = height(t.left);
+   right = height(t.right);
+   return 1 + Math.max(left, right);
+}
+
+console.log("the height is: ", height(treePractice));
+
+function isBST(t) {
+   if (t.left > t.key || t.right < t.key) {
+      return "not a BST";
+   }
+   left = isBST(t.left);
+   right = isBST(r.right);
 }
